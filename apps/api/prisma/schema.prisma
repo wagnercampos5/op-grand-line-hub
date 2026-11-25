@@ -1,0 +1,28 @@
+generator client {
+  provider     = "prisma-client"
+  output       = "../src/generated/prisma"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Affiliation {
+  PIRATE
+  MARINE
+  REVOLUTIONARY
+  BOUNTY_HUNTER
+}
+
+model User {
+  id           String      @id @default(uuid()) @db.Uuid
+  name         String
+  email        String      @unique
+  passwordHash String      @map("password_hash")
+  affiliation  Affiliation
+  bounty       BigInt      @default(0)
+  createdAt    DateTime    @default(now()) @map("created_at") @db.Timestamptz
+
+  @@map("users")
+}

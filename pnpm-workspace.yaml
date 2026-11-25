@@ -2,3 +2,8 @@ packages:
   - 'apps/*'
 allowBuilds:
   '@parcel/watcher': true
+  '@prisma/engines': true
+  bcrypt: true
+  esbuild: true
+  prisma: true
+  '@scarf/scarf': false

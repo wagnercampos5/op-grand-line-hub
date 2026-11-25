@@ -1,0 +1,6 @@
+export enum Affiliation {
+  PIRATE = 'PIRATE',
+  MARINE = 'MARINE',
+  REVOLUTIONARY = 'REVOLUTIONARY',
+  BOUNTY_HUNTER = 'BOUNTY_HUNTER',
+}
