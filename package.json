@@ -1,0 +1,14 @@
+{
+    "name": "op-grand-line-hub",
+    "private": true,
+    "scripts": {
+        "dev": "pnpm --parallel -r dev",
+        "web:dev": "pnpm --filter web dev",
+        "api:dev": "pnpm --filter api start:dev",
+        "web:build": "pnpm --filter web build",
+        "api:build": "pnpm --filter api build",
+        "web:test": "pnpm --filter web test",
+        "api:test": "pnpm --filter api test",
+        "lint": "pnpm -r lint"
+    }
+}
