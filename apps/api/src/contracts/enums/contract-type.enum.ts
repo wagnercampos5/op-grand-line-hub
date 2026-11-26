@@ -1,0 +1,4 @@
+export enum ContractType {
+  CREW_RECRUITMENT = 'CREW_RECRUITMENT',
+  BOUNTY_HUNTER = 'BOUNTY_HUNTER',
+}

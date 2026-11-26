@@ -9,6 +9,7 @@
         "api:build": "pnpm --filter api build",
         "web:test": "pnpm --filter web test",
         "api:test": "pnpm --filter api test",
+        "db:seed": "pnpm --filter api prisma:seed",
         "lint": "pnpm -r lint"
     }
 }

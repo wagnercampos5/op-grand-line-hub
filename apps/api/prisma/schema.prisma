@@ -15,14 +15,110 @@ enum Affiliation {
   BOUNTY_HUNTER
 }
 
+enum ChronicleCategory {
+  VOYAGE_LOG
+  ISLAND_DISCOVERY
+  AKUMA_NO_MI
+  VOID_CENTURY
+}
+
+enum ContractType {
+  CREW_RECRUITMENT
+  BOUNTY_HUNTER
+}
+
+enum Sea {
+  EAST_BLUE
+  GRAND_LINE
+  NEW_WORLD
+}
+
+enum ContractStatus {
+  OPEN
+  IN_PROGRESS
+  COMPLETED
+}
+
 model User {
-  id           String      @id @default(uuid()) @db.Uuid
-  name         String
-  email        String      @unique
-  passwordHash String      @map("password_hash")
-  affiliation  Affiliation
-  bounty       BigInt      @default(0)
-  createdAt    DateTime    @default(now()) @map("created_at") @db.Timestamptz
+  id             String          @id @default(uuid()) @db.Uuid
+  name           String
+  email          String          @unique
+  passwordHash   String          @map("password_hash")
+  affiliation    Affiliation
+  bounty         BigInt          @default(0)
+  createdAt      DateTime        @default(now()) @map("created_at") @db.Timestamptz
+  chronicles     Chronicle[]
+  comments       Comment[]
+  chronicleLikes ChronicleLike[]
+  contracts      Contract[]
 
   @@map("users")
+}
+
+model Chronicle {
+  id        String            @id @default(uuid()) @db.Uuid
+  title     String
+  content   String            @db.Text
+  category  ChronicleCategory
+  coverUrl  String?           @map("cover_url")
+  authorId  String            @map("author_id") @db.Uuid
+  createdAt DateTime          @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt DateTime          @updatedAt @map("updated_at") @db.Timestamptz
+
+  author   User            @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  comments Comment[]
+  likes    ChronicleLike[]
+
+  @@index([createdAt(sort: Desc)])
+  @@index([category, createdAt(sort: Desc)])
+  @@index([authorId])
+  @@map("chronicles")
+}
+
+model ChronicleLike {
+  chronicleId String   @map("chronicle_id") @db.Uuid
+  userId      String   @map("user_id") @db.Uuid
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz
+
+  chronicle Chronicle @relation(fields: [chronicleId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([chronicleId, userId])
+  @@index([userId])
+  @@map("chronicle_likes")
+}
+
+model Comment {
+  id          String   @id @default(uuid()) @db.Uuid
+  content     String   @db.Text
+  chronicleId String   @map("chronicle_id") @db.Uuid
+  authorId    String   @map("author_id") @db.Uuid
+  createdAt   DateTime @default(now()) @map("created_at") @db.Timestamptz
+
+  chronicle Chronicle @relation(fields: [chronicleId], references: [id], onDelete: Cascade)
+  author    User      @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@index([chronicleId, createdAt])
+  @@index([authorId])
+  @@map("comments")
+}
+
+model Contract {
+  id          String         @id @default(uuid()) @db.Uuid
+  title       String         
+  description String         @db.Text
+  type        ContractType
+  reward      BigInt         @default(0)
+  sea         Sea
+  status      ContractStatus @default(OPEN)
+  authorId    String         @map("author_id") @db.Uuid
+  createdAt   DateTime       @default(now()) @map("created_at") @db.Timestamptz
+  updatedAt   DateTime       @updatedAt @map("updated_at") @db.Timestamptz
+
+  author User @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@index([sea, type, status, createdAt(sort: Desc)])
+  @@index([createdAt(sort: Desc)])
+  @@index([authorId])
+  @@map("contracts")
 }

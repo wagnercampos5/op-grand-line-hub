@@ -4,6 +4,8 @@ import type { InputProps } from '../../atoms/Input'
 import { Label } from '../../atoms/Label'
 import { Select } from '../../atoms/Select'
 import type { SelectOption, SelectProps } from '../../atoms/Select'
+import { Textarea } from '../../atoms/Textarea'
+import type { TextareaProps } from '../../atoms/Textarea'
 
 interface BaseFormFieldProps {
   id?: string
@@ -16,14 +18,25 @@ interface BaseFormFieldProps {
 type InputFormFieldProps = BaseFormFieldProps &
   Omit<InputProps, 'id' | 'hasError'> & {
     options?: undefined
+    multiline?: false
   }
 
 type SelectFormFieldProps = BaseFormFieldProps &
   Omit<SelectProps, 'id' | 'hasError' | 'options'> & {
     options: readonly SelectOption[]
+    multiline?: false
   }
 
-export type FormFieldProps = InputFormFieldProps | SelectFormFieldProps
+type TextareaFormFieldProps = BaseFormFieldProps &
+  Omit<TextareaProps, 'id' | 'hasError'> & {
+    multiline: true
+    options?: undefined
+  }
+
+export type FormFieldProps =
+  | InputFormFieldProps
+  | SelectFormFieldProps
+  | TextareaFormFieldProps
 
 export function FormField(props: FormFieldProps) {
   const {
@@ -48,6 +61,48 @@ export function FormField(props: FormFieldProps) {
 
   const hasError = Boolean(error)
 
+  function renderControl() {
+    if ('multiline' in controlProps && controlProps.multiline) {
+      const { multiline: _multiline, ...textareaProps } = controlProps
+      void _multiline
+      return (
+        <Textarea
+          id={fieldId}
+          hasError={hasError}
+          required={required}
+          aria-describedby={describedBy}
+          {...(textareaProps as Omit<TextareaProps, 'id' | 'hasError'>)}
+        />
+      )
+    }
+
+    if ('options' in controlProps && controlProps.options) {
+      const { multiline: _multiline, ...selectProps } = controlProps
+      void _multiline
+      return (
+        <Select
+          id={fieldId}
+          hasError={hasError}
+          required={required}
+          aria-describedby={describedBy}
+          {...(selectProps as Omit<SelectProps, 'id' | 'hasError'>)}
+        />
+      )
+    }
+
+    const { multiline: _multiline, ...inputProps } = controlProps
+    void _multiline
+    return (
+      <Input
+        id={fieldId}
+        hasError={hasError}
+        required={required}
+        aria-describedby={describedBy}
+        {...(inputProps as Omit<InputProps, 'id' | 'hasError'>)}
+      />
+    )
+  }
+
   return (
     <div className="space-y-1.5">
       <Label
@@ -57,23 +112,7 @@ export function FormField(props: FormFieldProps) {
         {label}
       </Label>
 
-      {'options' in controlProps && controlProps.options ? (
-        <Select
-          id={fieldId}
-          hasError={hasError}
-          required={required}
-          aria-describedby={describedBy}
-          {...(controlProps as Omit<SelectProps, 'id' | 'hasError'>)}
-        />
-      ) : (
-        <Input
-          id={fieldId}
-          hasError={hasError}
-          required={required}
-          aria-describedby={describedBy}
-          {...(controlProps as Omit<InputProps, 'id' | 'hasError'>)}
-        />
-      )}
+      {renderControl()}
 
       {helperText && (
         <p id={helperId} className="text-xs text-mist-gray">

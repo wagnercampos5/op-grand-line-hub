@@ -1,0 +1,6 @@
+export enum ChronicleCategory {
+  VOYAGE_LOG = 'VOYAGE_LOG',
+  ISLAND_DISCOVERY = 'ISLAND_DISCOVERY',
+  AKUMA_NO_MI = 'AKUMA_NO_MI',
+  VOID_CENTURY = 'VOID_CENTURY',
+}

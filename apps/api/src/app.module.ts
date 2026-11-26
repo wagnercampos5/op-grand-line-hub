@@ -3,7 +3,9 @@ import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
+import { ChroniclesModule } from './chronicles/chronicles.module';
 import { validateEnv } from './config/env.validation';
+import { ContractsModule } from './contracts/contracts.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { UsersModule } from './users/users.module';
 
@@ -16,6 +18,8 @@ import { UsersModule } from './users/users.module';
     PrismaModule,
     UsersModule,
     AuthModule,
+    ChroniclesModule,
+    ContractsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -40,6 +40,21 @@ describe('FormField', () => {
     )
   })
 
+  it('renders a Textarea when multiline is true', () => {
+    render(
+      <FormField
+        label="Relato Completo"
+        multiline
+        rows={5}
+        defaultValue="Diário de bordo da rota para Skypiea."
+      />,
+    )
+
+    expect(
+      screen.getByRole('textbox', { name: 'Relato Completo' }),
+    ).toHaveValue('Diário de bordo da rota para Skypiea.')
+  })
+
   it('has no accessibility violations', async () => {
     const { container } = render(
       <FormField
