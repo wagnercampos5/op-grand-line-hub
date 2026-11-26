@@ -6,8 +6,8 @@ Plataforma full-stack inspirada no universo de *One Piece* construída em monore
 
 ## Ambiente em Produção (Deploy)
 
-- **Aplicação Web (Vercel):** [Acessar Grand Line Hub](https://XXXXXXXXXXXXXXXXXXX.vercel.app)
-- **API REST & Swagger Docs (Render):** [Acessar Documentação da API](https://XXXXXXXXXXXXXXXXX.onrender.com/api/docs)
+- **Aplicação Web (Vercel):** [Acessar Grand Line Hub](https://https://op-grand-line-hub.vercel.app)
+- **API REST & Swagger Docs (Render):** [Acessar Documentação da API](https://https://op-grand-line-api.onrender.comapi/docs)
 - **Banco de Dados:** PostgreSQL 16 gerenciado via Supabase
 
 > **Nota sobre cold start:** Como a API utiliza o plano gratuito do Render, a primeira requisição após um período de inatividade pode levar cerca de 30 segundos para despertar o servidor.
